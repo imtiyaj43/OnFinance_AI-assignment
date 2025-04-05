@@ -1,4 +1,4 @@
-# OnFinance AI - EKS Deployment Assignment
+# OnFinance AI - Assignment
 
 This project contains the implementation for the OnFinance AI Implementation Engineer assignment. It includes infrastructure automation using Terraform, Kubernetes deployment on AWS EKS, logging & monitoring setup, and external API integration.
 
