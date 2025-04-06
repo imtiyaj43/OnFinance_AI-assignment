@@ -223,9 +223,9 @@ resource "aws_eks_node_group" "terraform" {
   subnet_ids      = aws_subnet.private_subnet[*].id
 
   scaling_config {
-    desired_size = 3
-    max_size     = 3
-    min_size     = 3
+    desired_size = 2
+    max_size     = 5
+    min_size     = 1
   }
 
   instance_types = ["t2.medium"]
@@ -281,10 +281,24 @@ resource "aws_db_instance" "mysql" {
   db_subnet_group_name    = aws_db_subnet_group.mysql_subnet_group.name
   vpc_security_group_ids  = [aws_security_group.mysql_sg.id]
   skip_final_snapshot     = true
-  publicly_accessible     = false
+  publicly_accessible     = true
   deletion_protection     = false
 
   tags = {
     Name = "MySQL-RDS"
+  }
+}
+
+#ECR
+
+resource "aws_ecr_repository" "onfinance_backend" {
+  name = "onfinance-backend"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+
+  tags = {
+    Name = "OnFinance ECR"
   }
 }

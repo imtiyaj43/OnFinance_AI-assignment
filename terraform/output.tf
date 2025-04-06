@@ -21,3 +21,7 @@ output "private_subnet_ids" {
 output "mysql_endpoint" {
   value = aws_db_instance.mysql.endpoint
 }
+
+output "ecr_repository_url" {
+  value = aws_ecr_repository.onfinance_backend.repository_url
+}
