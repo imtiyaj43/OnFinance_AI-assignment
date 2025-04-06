@@ -1,13 +1,12 @@
 variable "ssh_key_name" {
   description = "The name of the SSH key pair to use for instances"
   type        = string
-  default     = "key-name"
+  default     = "ubuntu-key"
 }
 
-variable "db_name" {
-  description = "Database name for MySQL"
-  default     = "onfinancedb"
-}
+#variable "db_name" {
+#  description = "Database name for MySQL"
+#  default     = "onfinancedb"}
 
 variable "db_username" {
   description = "Username for MySQL"

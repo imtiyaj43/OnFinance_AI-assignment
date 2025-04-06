@@ -139,6 +139,13 @@ resource "aws_security_group" "terraform_node_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 3306 #MYSQL
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -224,7 +231,7 @@ resource "aws_eks_node_group" "terraform" {
 
   scaling_config {
     desired_size = 2
-    max_size     = 5
+    max_size     = 3
     min_size     = 1
   }
 
