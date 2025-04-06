@@ -309,3 +309,28 @@ resource "aws_ecr_repository" "onfinance_backend" {
     Name = "OnFinance ECR"
   }
 }
+
+
+resource "aws_vpc_dhcp_options" "main" {
+  domain_name          = "ec2.internal"
+  domain_name_servers  = ["AmazonProvidedDNS"]
+
+  tags = {
+    Name = "OnFinance DHCP Options"
+  }
+}
+
+resource "aws_vpc_dhcp_options_association" "main" {
+  vpc_id          = aws_vpc.terraform_vpc.id
+  dhcp_options_id = aws_vpc_dhcp_options.main.id
+}
+
+resource "aws_vpc_attribute" "dns_support" {
+  vpc_id = aws_vpc.terraform_vpc.id
+  enable_dns_support = true
+}
+
+resource "aws_vpc_attribute" "dns_hostnames" {
+  vpc_id = aws_vpc.terraform_vpc.id
+  enable_dns_hostnames = true
+}
