@@ -3,3 +3,18 @@ variable "ssh_key_name" {
   type        = string
   default     = "ubuntu-key"
 }
+
+variable "db_name" {
+  description = "Database name for MySQL"
+  default     = "onfinancedb"
+}
+
+variable "db_username" {
+  description = "Username for MySQL"
+  default     = "admin"
+}
+
+variable "db_password" {
+  description = "Password for MySQL"
+  default     = "OnFinance123!" # Change this for real projects
+}

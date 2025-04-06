@@ -235,3 +235,56 @@ resource "aws_eks_node_group" "terraform" {
     source_security_group_ids = [aws_security_group.terraform_node_sg.id]
   }
 }
+
+#RDS
+
+resource "aws_db_subnet_group" "mysql_subnet_group" {
+  name       = "mysql-subnet-group"
+  subnet_ids = aws_subnet.private_subnet[*].id
+
+  tags = {
+    Name = "MySQL Subnet Group"
+  }
+}
+
+resource "aws_security_group" "mysql_sg" {
+  name   = "mysql-sg"
+  vpc_id = aws_vpc.terraform_vpc.id
+
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    security_groups = [aws_security_group.terraform_node_sg.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "MySQL Security Group"
+  }
+}
+
+resource "aws_db_instance" "mysql" {
+  identifier              = "onfinance-mysql-db"
+  engine                  = "mysql"
+  engine_version          = "8.0"
+  instance_class          = "db.t3.micro"
+  allocated_storage       = 20
+  username                = var.db_username
+  password                = var.db_password
+  db_subnet_group_name    = aws_db_subnet_group.mysql_subnet_group.name
+  vpc_security_group_ids  = [aws_security_group.mysql_sg.id]
+  skip_final_snapshot     = true
+  publicly_accessible     = false
+  deletion_protection     = false
+
+  tags = {
+    Name = "MySQL-RDS"
+  }
+}

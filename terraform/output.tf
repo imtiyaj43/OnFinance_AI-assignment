@@ -17,3 +17,7 @@ output "public_subnet_ids" {
 output "private_subnet_ids" {
   value = aws_subnet.private_subnet[*].id
 }
+
+output "mysql_endpoint" {
+  value = aws_db_instance.mysql.endpoint
+}
