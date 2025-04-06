@@ -4,6 +4,8 @@ provider "aws" {
 
 resource "aws_vpc" "terraform_vpc" {
   cidr_block = "10.0.0.0/16"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
 
   tags = {
     Name = "OnFinance-vpc"
@@ -211,6 +213,7 @@ resource "aws_iam_role_policy_attachment" "terraform_node_group_monitoring_polic
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
+
 # EKS Cluster and Node Group
 
 resource "aws_eks_cluster" "terraform" {
@@ -247,7 +250,7 @@ resource "aws_eks_node_group" "terraform" {
 
 resource "aws_db_subnet_group" "mysql_subnet_group" {
   name       = "mysql-subnet-group"
-  subnet_ids = aws_subnet.private_subnet[*].id
+  subnet_ids = aws_subnet.public_subnet[*].id
 
   tags = {
     Name = "MySQL Subnet Group"
@@ -308,29 +311,4 @@ resource "aws_ecr_repository" "onfinance_backend" {
   tags = {
     Name = "OnFinance ECR"
   }
-}
-
-
-resource "aws_vpc_dhcp_options" "main" {
-  domain_name          = "ec2.internal"
-  domain_name_servers  = ["AmazonProvidedDNS"]
-
-  tags = {
-    Name = "OnFinance DHCP Options"
-  }
-}
-
-resource "aws_vpc_dhcp_options_association" "main" {
-  vpc_id          = aws_vpc.terraform_vpc.id
-  dhcp_options_id = aws_vpc_dhcp_options.main.id
-}
-
-resource "aws_vpc_attribute" "dns_support" {
-  vpc_id = aws_vpc.terraform_vpc.id
-  enable_dns_support = true
-}
-
-resource "aws_vpc_attribute" "dns_hostnames" {
-  vpc_id = aws_vpc.terraform_vpc.id
-  enable_dns_hostnames = true
 }

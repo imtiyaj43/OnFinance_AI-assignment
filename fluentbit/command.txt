@@ -1,0 +1,6 @@
+ download the official CloudWatch config:
+
+curl -O https://raw.githubusercontent.com/aws/aws-for-fluent-bit/mainline/deployment/fluent-bit-cluster-info.yaml
+
+
+curl -LO https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/master/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/fluent-bit/fluent-bit.yaml
